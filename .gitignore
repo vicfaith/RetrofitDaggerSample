@@ -1,0 +1,12 @@
+.gradle
+/build
+/local.properties
+/captures
+
+# User-specific configurations
+.idea/
+*.iml
+app/app.iml
+
+# OS-specific files
+.DS_Store
