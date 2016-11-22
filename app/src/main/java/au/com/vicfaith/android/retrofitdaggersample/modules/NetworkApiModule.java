@@ -2,7 +2,7 @@ package au.com.vicfaith.android.retrofitdaggersample.modules;
 
 import javax.inject.Singleton;
 
-import au.com.vicfaith.android.daggersample.NetworkApi;
+import au.com.vicfaith.android.retrofitdaggersample.NetworkApi;
 import dagger.Module;
 import dagger.Provides;
 

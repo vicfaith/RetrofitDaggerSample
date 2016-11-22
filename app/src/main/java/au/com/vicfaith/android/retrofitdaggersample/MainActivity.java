@@ -9,7 +9,7 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    au.com.vicfaith.android.daggersample.NetworkApi networkApi;
+    au.com.vicfaith.android.retrofitdaggersample.NetworkApi networkApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

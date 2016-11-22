@@ -1,4 +1,4 @@
-package au.com.vicfaith.android.daggersample;
+package au.com.vicfaith.android.retrofitdaggersample;
 
 public class NetworkApi {
 
