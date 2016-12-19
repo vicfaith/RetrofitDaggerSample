@@ -10,16 +10,21 @@ import android.widget.Toast;
 import au.com.vicfaith.android.retrofitdaggersample.R;
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListData;
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListResponse;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements HomeView {
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    @Bind(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @Bind(R.id.progress)
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         initViews();
 
@@ -28,9 +33,7 @@ public class MainActivity extends BaseActivity implements HomeView {
     }
 
     public void initViews() {
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        progressBar = (ProgressBar) findViewById(R.id.progress);
     }
 
     @Override
