@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import au.com.vicfaith.android.retrofitdaggersample.MyApplication;
 import au.com.vicfaith.android.retrofitdaggersample.R;
+import au.com.vicfaith.android.retrofitdaggersample.components.DaggerMyActivityComponent;
+import au.com.vicfaith.android.retrofitdaggersample.components.MyActivityComponent;
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListData;
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListResponse;
+import au.com.vicfaith.android.retrofitdaggersample.modules.HomePresenterModule;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -19,6 +23,8 @@ public class MainActivity extends BaseActivity implements HomeView {
     @Bind(R.id.progress)
     ProgressBar progressBar;
 
+    HomePresenter presenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +32,18 @@ public class MainActivity extends BaseActivity implements HomeView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        MyActivityComponent component = DaggerMyActivityComponent.builder()
+                .myAppComponent(((MyApplication) getApplication()).getComponent())
+                .homePresenterModule(new HomePresenterModule(((MyApplication) getApplication()).getComponent().getApiService(), this))
+                .build();
+        component.inject(this);
+
+        apiService = component.getApiService();
+        sharedPreferences = component.getSharedPreferences();
+        presenter = component.getHomePresenter();
+
         initViews();
 
-        HomePresenter presenter = new HomePresenter(apiService, this);
         presenter.getCityList();
     }
 
@@ -37,12 +52,12 @@ public class MainActivity extends BaseActivity implements HomeView {
     }
 
     @Override
-    public void showWait() {
+    public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void removeWait() {
+    public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
     }
 
@@ -52,8 +67,8 @@ public class MainActivity extends BaseActivity implements HomeView {
     }
 
     @Override
-    public void getCityListSuccess(CityListResponse cityListResponse) {
-        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), cityListResponse.getData(),
+    public void getCityListSuccess(CityListResponse response) {
+        HomeAdapter adapter = new HomeAdapter(getApplicationContext(), response.getData(),
                 new HomeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(CityListData Item) {

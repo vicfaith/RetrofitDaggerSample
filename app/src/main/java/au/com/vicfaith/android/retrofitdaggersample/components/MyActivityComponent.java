@@ -2,20 +2,19 @@ package au.com.vicfaith.android.retrofitdaggersample.components;
 
 import android.support.v4.app.Fragment;
 
-import au.com.vicfaith.android.retrofitdaggersample.modules.NetworkModule;
-import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
-import au.com.vicfaith.android.retrofitdaggersample.ui.BaseActivity;
+import au.com.vicfaith.android.retrofitdaggersample.modules.HomePresenterModule;
 import au.com.vicfaith.android.retrofitdaggersample.ui.HomePresenter;
+import au.com.vicfaith.android.retrofitdaggersample.ui.MainActivity;
 import dagger.Component;
 
 @PerActivity
-@Component(dependencies = MyAppComponent.class, modules = {NetworkModule.class})
+@Component(dependencies = MyAppComponent.class, modules = {HomePresenterModule.class})
 
-public interface MyActivityComponent {
+public interface MyActivityComponent extends MyAppComponent {
 
-    ApiService getApiService();
+    HomePresenter getHomePresenter();
 
-    void inject(BaseActivity activity);
+    void inject(MainActivity activity);
 
     void inject(Fragment fragment);
 

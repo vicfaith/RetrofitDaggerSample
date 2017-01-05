@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import au.com.vicfaith.android.retrofitdaggersample.BuildConfig;
-import au.com.vicfaith.android.retrofitdaggersample.components.PerActivity;
+import au.com.vicfaith.android.retrofitdaggersample.components.PerApp;
 import au.com.vicfaith.android.retrofitdaggersample.network.ApiInterface;
 import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
 import dagger.Module;
@@ -26,7 +26,7 @@ public class NetworkModule {
     }
 
     @Provides
-    @PerActivity
+    @PerApp
     ApiService providesApiService() {
         Cache cache = null;
         try {

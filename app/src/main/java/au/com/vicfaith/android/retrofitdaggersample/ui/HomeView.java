@@ -3,11 +3,11 @@ package au.com.vicfaith.android.retrofitdaggersample.ui;
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListResponse;
 
 public interface HomeView {
-    void showWait();
+    void showProgressBar();
 
-    void removeWait();
+    void hideProgressBar();
 
     void onFailure(String appErrorMessage);
 
-    void getCityListSuccess(CityListResponse cityListResponse);
+    void getCityListSuccess(CityListResponse response);
 }

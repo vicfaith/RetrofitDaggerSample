@@ -17,19 +17,19 @@ public class HomePresenter {
     }
 
     public void getCityList() {
-        homeView.showWait();
+        homeView.showProgressBar();
 
         Subscription subscription = apiService.getCityList(new ApiService.GetCityListCallback() {
 
             @Override
-            public void onSuccess(CityListResponse cityListResponse) {
-                homeView.removeWait();
-                homeView.getCityListSuccess(cityListResponse);
+            public void onSuccess(CityListResponse response) {
+                homeView.hideProgressBar();
+                homeView.getCityListSuccess(response);
             }
 
             @Override
             public void onError(Throwable error) {
-                homeView.removeWait();
+                homeView.hideProgressBar();
                 homeView.onFailure(error.getMessage());
             }
         });
