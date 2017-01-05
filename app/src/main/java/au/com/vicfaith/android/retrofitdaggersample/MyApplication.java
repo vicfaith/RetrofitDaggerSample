@@ -2,24 +2,27 @@ package au.com.vicfaith.android.retrofitdaggersample;
 
 import android.app.Application;
 
-import java.io.File;
-
-import au.com.vicfaith.android.retrofitdaggersample.components.DaggerDiComponent;
-import au.com.vicfaith.android.retrofitdaggersample.components.DiComponent;
-import au.com.vicfaith.android.retrofitdaggersample.modules.NetworkApiModule;
+import au.com.vicfaith.android.retrofitdaggersample.components.DaggerMyAppComponent;
+import au.com.vicfaith.android.retrofitdaggersample.components.MyAppComponent;
+import au.com.vicfaith.android.retrofitdaggersample.modules.DataModule;
+import au.com.vicfaith.android.retrofitdaggersample.modules.MyAppModule;
 
 public class MyApplication extends Application {
-    private DiComponent diComponent;
+    private MyAppComponent myAppComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        File cacheFile = new File(getCacheDir(), "responses");
-        diComponent = DaggerDiComponent.builder().networkApiModule(new NetworkApiModule(cacheFile)).build();
+        myAppComponent = DaggerMyAppComponent.builder()
+                .myAppModule(new MyAppModule(this))
+                .dataModule(new DataModule(this))
+                .build();
+
+        myAppComponent.inject(this);
     }
 
-    public DiComponent getComponent() {
-        return diComponent;
+    public MyAppComponent getComponent() {
+        return myAppComponent;
     }
 }

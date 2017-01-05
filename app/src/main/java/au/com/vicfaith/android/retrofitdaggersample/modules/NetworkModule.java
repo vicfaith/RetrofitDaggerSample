@@ -3,9 +3,10 @@ package au.com.vicfaith.android.retrofitdaggersample.modules;
 import java.io.File;
 import java.io.IOException;
 
-import javax.inject.Singleton;
-
 import au.com.vicfaith.android.retrofitdaggersample.BuildConfig;
+import au.com.vicfaith.android.retrofitdaggersample.components.PerActivity;
+import au.com.vicfaith.android.retrofitdaggersample.network.ApiInterface;
+import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -17,16 +18,16 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class NetworkApiModule {
+public class NetworkModule {
     private File cacheFile;
 
-    public NetworkApiModule(File cacheFile) {
+    public NetworkModule(File cacheFile) {
         this.cacheFile = cacheFile;
     }
 
     @Provides
-    @Singleton
-    public Retrofit providesRetrofit() {
+    @PerActivity
+    ApiService providesApiService() {
         Cache cache = null;
         try {
             cache = new Cache(cacheFile, 10 * 1024 * 1024);
@@ -54,11 +55,13 @@ public class NetworkApiModule {
                 .cache(cache)
                 .build();
 
-        return new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASEURL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+
+        return new ApiService(retrofit.create(ApiInterface.class));
     }
 }
