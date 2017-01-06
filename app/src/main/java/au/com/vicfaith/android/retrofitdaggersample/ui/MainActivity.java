@@ -62,8 +62,8 @@ public class MainActivity extends BaseActivity implements HomeView {
     }
 
     @Override
-    public void onFailure(String appErrorMessage) {
-
+    public void onFailure(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -78,5 +78,11 @@ public class MainActivity extends BaseActivity implements HomeView {
                 });
 
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.onStop();
     }
 }

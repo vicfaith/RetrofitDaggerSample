@@ -2,6 +2,7 @@ package au.com.vicfaith.android.retrofitdaggersample.ui;
 
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListResponse;
 import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
+import au.com.vicfaith.android.retrofitdaggersample.network.RequestListener;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -19,18 +20,17 @@ public class HomePresenter {
     public void getCityList() {
         homeView.showProgressBar();
 
-        Subscription subscription = apiService.getCityList(new ApiService.GetCityListCallback() {
-
+        Subscription subscription = apiService.getCityList(new RequestListener<CityListResponse>() {
             @Override
-            public void onSuccess(CityListResponse response) {
+            public void onRequestError(Throwable e) {
                 homeView.hideProgressBar();
-                homeView.getCityListSuccess(response);
+                homeView.onFailure(e.getMessage());
             }
 
             @Override
-            public void onError(Throwable error) {
+            public void onRequestSuccess(CityListResponse response) {
                 homeView.hideProgressBar();
-                homeView.onFailure(error.getMessage());
+                homeView.getCityListSuccess(response);
             }
         });
 
