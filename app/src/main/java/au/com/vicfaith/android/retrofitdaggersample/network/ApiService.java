@@ -14,7 +14,7 @@ public class ApiService {
         this.apiInterface = apiInterface;
     }
 
-    public <T> Subscription getCityList(final RequestListener callback) {
+    public Subscription getCityList(final RequestListener callback) {
         return apiInterface.getCityList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
