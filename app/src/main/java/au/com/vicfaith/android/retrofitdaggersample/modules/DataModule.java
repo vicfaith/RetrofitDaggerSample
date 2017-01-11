@@ -3,7 +3,8 @@ package au.com.vicfaith.android.retrofitdaggersample.modules;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import au.com.vicfaith.android.retrofitdaggersample.components.PerApp;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,7 +19,7 @@ public class DataModule {
     }
 
     @Provides
-    @PerApp
+    @Singleton
     SharedPreferences provideSharedPreferences() {
         return context.getApplicationContext().getSharedPreferences(PREFS_DEFAULT, Context.MODE_PRIVATE);
     }

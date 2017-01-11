@@ -13,17 +13,23 @@ import au.com.vicfaith.android.retrofitdaggersample.modules.NetworkModule;
 public class MyApplication extends Application {
     private MyAppComponent myAppComponent;
 
+    private static MyApplication application;
+
+    public static MyApplication getInstance() {
+        return application;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        application = this;
 
         myAppComponent = DaggerMyAppComponent.builder()
                 .myAppModule(new MyAppModule(this))
                 .dataModule(new DataModule(this))
                 .networkModule(new NetworkModule(new File(getCacheDir(), "responses")))
                 .build();
-
-        myAppComponent.inject(this);
     }
 
     public MyAppComponent getComponent() {

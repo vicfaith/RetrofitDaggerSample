@@ -1,23 +1,24 @@
 package au.com.vicfaith.android.retrofitdaggersample.components;
 
-import android.content.SharedPreferences;
+import javax.inject.Singleton;
 
-import au.com.vicfaith.android.retrofitdaggersample.MyApplication;
 import au.com.vicfaith.android.retrofitdaggersample.modules.DataModule;
+import au.com.vicfaith.android.retrofitdaggersample.modules.HomePresenterModule;
 import au.com.vicfaith.android.retrofitdaggersample.modules.MyAppModule;
 import au.com.vicfaith.android.retrofitdaggersample.modules.NetworkModule;
-import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
+import au.com.vicfaith.android.retrofitdaggersample.ui.MainActivity;
 import dagger.Component;
 
-@PerApp
-@Component(modules = {MyAppModule.class, DataModule.class, NetworkModule.class})
+@Singleton
+@Component(modules = {
+        MyAppModule.class,
+        DataModule.class,
+        NetworkModule.class
+})
 
 public interface MyAppComponent {
-    MyApplication getApplication();
 
-    SharedPreferences getSharedPreferences();
+    void inject(MainActivity activity);
 
-    ApiService getApiService();
-
-    void inject(MyApplication app);
+    MyActivityComponent plus(HomePresenterModule module);
 }

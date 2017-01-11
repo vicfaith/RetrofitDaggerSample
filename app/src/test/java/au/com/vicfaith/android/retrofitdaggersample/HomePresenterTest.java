@@ -68,7 +68,8 @@ public class HomePresenterTest {
 
     @Test
     public void testHomePresenter() {
-        HomePresenter homePresenter = new HomePresenter(apiService, homeView);
+        HomePresenter homePresenter = new HomePresenter(apiService, null);
+        homePresenter.attachView(homeView);
         homePresenter.getCityList();
 
         verify(homeView).showProgressBar();

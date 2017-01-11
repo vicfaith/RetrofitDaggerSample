@@ -1,43 +1,62 @@
 package au.com.vicfaith.android.retrofitdaggersample.ui;
 
+import android.content.SharedPreferences;
+
+import javax.inject.Inject;
+
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListResponse;
 import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
 import au.com.vicfaith.android.retrofitdaggersample.network.RequestListener;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public class HomePresenter {
-    private final ApiService apiService;
-    private final HomeView homeView;
+public class HomePresenter extends BasePresenter<HomeView> {
+    ApiService apiService;
+    SharedPreferences sharedPreferences;
+
     private CompositeSubscription subscriptions;
 
-    public HomePresenter(ApiService apiService, HomeView view) {
+    @Inject
+    public HomePresenter(ApiService apiService, SharedPreferences sharedPreferences) {
         this.apiService = apiService;
-        this.homeView = view;
+        this.sharedPreferences = sharedPreferences;
         this.subscriptions = new CompositeSubscription();
     }
 
     public void getCityList() {
-        homeView.showProgressBar();
+        if (!isViewAttached()) {
+            return;
+        }
+
+        mView.showProgressBar();
 
         Subscription subscription = apiService.getCityList(new RequestListener<CityListResponse>() {
             @Override
             public void onRequestError(Throwable e) {
-                homeView.hideProgressBar();
-                homeView.onFailure(e.getMessage());
+                if (isViewAttached()) {
+                    mView.hideProgressBar();
+                    mView.onFailure(e.getMessage());
+                }
             }
 
             @Override
             public void onRequestSuccess(CityListResponse response) {
-                homeView.hideProgressBar();
-                homeView.getCityListSuccess(response);
+                if (isViewAttached()) {
+                    mView.hideProgressBar();
+                    mView.getCityListSuccess(response);
+                }
             }
         });
 
         subscriptions.add(subscription);
     }
 
-    public void onStop() {
-        subscriptions.unsubscribe();
+    @Override
+    public void detachView() {
+        super.detachView();
+
+        if (subscriptions != null && !subscriptions.isUnsubscribed()) {
+            subscriptions.unsubscribe();
+        }
     }
 }

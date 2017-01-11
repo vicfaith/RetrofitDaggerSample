@@ -1,5 +1,7 @@
 package au.com.vicfaith.android.retrofitdaggersample.modules;
 
+import android.content.SharedPreferences;
+
 import au.com.vicfaith.android.retrofitdaggersample.components.PerActivity;
 import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
 import au.com.vicfaith.android.retrofitdaggersample.ui.HomePresenter;
@@ -9,17 +11,23 @@ import dagger.Provides;
 
 @Module
 public class HomePresenterModule {
-    ApiService apiService;
     HomeView homeView;
 
-    public HomePresenterModule(ApiService apiService, HomeView homeView) {
-        this.apiService = apiService;
+    public HomePresenterModule(HomeView homeView) {
         this.homeView = homeView;
     }
 
     @Provides
     @PerActivity
-    HomePresenter providePresenter() {
-        return new HomePresenter(apiService, homeView);
+    public HomeView provideView() {
+        return homeView;
+    }
+
+    @Provides
+    @PerActivity
+    HomePresenter providePresenter(ApiService apiService, SharedPreferences sharedPreferences) {
+        HomePresenter presenter = new HomePresenter(apiService, sharedPreferences);
+        presenter.attachView(homeView);
+        return presenter;
     }
 }
