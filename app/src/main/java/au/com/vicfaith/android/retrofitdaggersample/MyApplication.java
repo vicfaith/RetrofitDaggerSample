@@ -25,6 +25,10 @@ public class MyApplication extends Application {
 
         application = this;
 
+        injectDependencies();
+    }
+
+    protected void injectDependencies() {
         myAppComponent = DaggerMyAppComponent.builder()
                 .myAppModule(new MyAppModule(this))
                 .dataModule(new DataModule(this))

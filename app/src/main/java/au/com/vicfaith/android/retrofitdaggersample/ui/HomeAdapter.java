@@ -15,6 +15,8 @@ import java.util.List;
 
 import au.com.vicfaith.android.retrofitdaggersample.R;
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListData;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private final OnItemClickListener listener;
@@ -59,14 +61,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCity, tvDesc;
+        @Bind(R.id.city)
+        TextView tvCity;
+        @Bind(R.id.hotel)
+        TextView tvDesc;
+        @Bind(R.id.image)
         ImageView background;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvCity = (TextView) itemView.findViewById(R.id.city);
-            tvDesc = (TextView) itemView.findViewById(R.id.hotel);
-            background = (ImageView) itemView.findViewById(R.id.image);
+            ButterKnife.bind(itemView);
         }
 
         public void click(final CityListData cityListData, final OnItemClickListener listener) {

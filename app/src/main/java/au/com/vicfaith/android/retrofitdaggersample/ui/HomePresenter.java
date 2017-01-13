@@ -11,9 +11,8 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 public class HomePresenter extends BasePresenter<HomeView> {
-    ApiService apiService;
-    SharedPreferences sharedPreferences;
-
+    private ApiService apiService;
+    private SharedPreferences sharedPreferences;
     private CompositeSubscription subscriptions;
 
     @Inject

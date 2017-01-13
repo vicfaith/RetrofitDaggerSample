@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collections;
@@ -15,6 +14,7 @@ import au.com.vicfaith.android.retrofitdaggersample.network.ApiInterface;
 import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
 import au.com.vicfaith.android.retrofitdaggersample.ui.HomePresenter;
 import au.com.vicfaith.android.retrofitdaggersample.ui.HomeView;
+import au.com.vicfaith.android.retrofitdaggersample.util.TestDataFactory;
 import rx.Observable;
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
@@ -23,6 +23,7 @@ import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 public class HomePresenterTest {
@@ -30,7 +31,7 @@ public class HomePresenterTest {
     HomeView homeView;
 
     ApiService apiService;
-    CityListResponse expectedResult = new CityListResponse();
+    CityListResponse expectedResult = TestDataFactory.createMockResponse();
 
     @Before
     public void setup() {
@@ -48,7 +49,7 @@ public class HomePresenterTest {
             }
         });
 
-        MockitoAnnotations.initMocks(this);
+        initMocks(this);
     }
 
     @After
