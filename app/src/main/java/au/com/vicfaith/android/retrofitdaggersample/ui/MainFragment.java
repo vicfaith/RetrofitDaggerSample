@@ -72,12 +72,12 @@ public class MainFragment extends Fragment implements HomeView {
     }
 
     @Override
-    public void onFailure(String error) {
+    public void showError(String error) {
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void getCityListSuccess(CityListResponse response) {
+    public void showCityList(CityListResponse response) {
         HomeAdapter adapter = new HomeAdapter(getActivity(), response.getData(),
                 new HomeAdapter.OnItemClickListener() {
                     @Override

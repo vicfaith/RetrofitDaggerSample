@@ -4,9 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.IOException;
 import java.util.Collections;
 
 import au.com.vicfaith.android.retrofitdaggersample.models.CityListResponse;
@@ -22,26 +24,29 @@ import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
 
 @RunWith(RobolectricTestRunner.class)
 public class HomePresenterTest {
     @Mock
     HomeView homeView;
 
-    ApiService apiService;
+    @Mock
+    ApiInterface apiInterface;
+
     CityListResponse expectedResult = TestDataFactory.createMockResponse();
 
     @Before
     public void setup() {
-        apiService = new ApiService(new ApiInterface() {
-            @Override
-            public Observable<CityListResponse> getCityList() {
-                return Observable.just(expectedResult);
-            }
-        });
-
         RxAndroidPlugins.getInstance().registerSchedulersHook(new RxAndroidSchedulersHook() {
             @Override
             public Scheduler getMainThreadScheduler() {
@@ -58,7 +63,7 @@ public class HomePresenterTest {
     }
 
     @Test
-    public void testObservable() {
+    public void shouldReceiveObservable() {
         Observable<CityListResponse> observable = Observable.just(expectedResult);
         TestSubscriber<CityListResponse> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
@@ -68,13 +73,46 @@ public class HomePresenterTest {
     }
 
     @Test
-    public void testHomePresenter() {
+    public void shouldHaveCorrectDataWhenApiSucceed() {
+        ApiService apiService = new ApiService(apiInterface);
+        when(apiInterface.getCityList()).thenReturn(Observable.just(expectedResult));
         HomePresenter homePresenter = new HomePresenter(apiService, null);
         homePresenter.attachView(homeView);
         homePresenter.getCityList();
 
         verify(homeView).showProgressBar();
         verify(homeView).hideProgressBar();
-        verify(homeView).getCityListSuccess(expectedResult);
+        verify(homeView).showCityList(expectedResult);
+        verify(homeView, never()).showError(null);
+    }
+
+    @Test
+    public void shouldNotShowProgressWheRuntimeError() {
+        ApiService apiService = new ApiService(apiInterface);
+        when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new RuntimeException("error")));
+        HomePresenter homePresenter = new HomePresenter(apiService, null);
+        homePresenter.attachView(homeView);
+        homePresenter.getCityList();
+
+        verify(homeView).showProgressBar();
+        verify(homeView).hideProgressBar();
+        verify(homeView).showError(anyString());
+        verify(homeView, never()).showCityList(expectedResult);
+    }
+
+    @Test
+    public void shouldNotShowProgressWhenApiFails() {
+        ApiService apiService = new ApiService(apiInterface);
+        when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new IOException("network unavailable")));
+        HomePresenter homePresenter = new HomePresenter(apiService, null);
+        homePresenter.attachView(homeView);
+        homePresenter.getCityList();
+
+        verify(homeView, times(1)).showProgressBar();
+        verify(homeView, times(1)).hideProgressBar();
+        ArgumentCaptor<String> captor = forClass(String.class);
+        verify(homeView).showError(captor.capture());
+        assertThat(captor.getValue(), is("network unavailable"));
+        verify(homeView, never()).showCityList(expectedResult);
     }
 }

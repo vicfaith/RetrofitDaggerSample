@@ -34,7 +34,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onRequestError(Throwable e) {
                 if (isViewAttached()) {
                     mView.hideProgressBar();
-                    mView.onFailure(e.getMessage());
+                    mView.showError(e.getMessage());
                 }
             }
 
@@ -42,7 +42,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
             public void onRequestSuccess(CityListResponse response) {
                 if (isViewAttached()) {
                     mView.hideProgressBar();
-                    mView.getCityListSuccess(response);
+                    mView.showCityList(response);
                 }
             }
         });

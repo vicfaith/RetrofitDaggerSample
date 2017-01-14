@@ -14,7 +14,7 @@ public abstract class BasePresenter<V> {
         mView = null;
     }
 
-    protected final boolean isViewAttached() {
+    public final boolean isViewAttached() {
         return mView != null;
     }
 }

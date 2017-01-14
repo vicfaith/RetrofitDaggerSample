@@ -7,7 +7,7 @@ public interface HomeView {
 
     void hideProgressBar();
 
-    void onFailure(String appErrorMessage);
+    void showError(String error);
 
-    void getCityListSuccess(CityListResponse response);
+    void showCityList(CityListResponse response);
 }

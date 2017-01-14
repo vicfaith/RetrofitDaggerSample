@@ -22,6 +22,7 @@ import au.com.vicfaith.android.retrofitdaggersample.util.TestDataFactory;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -50,7 +51,7 @@ public class HomePresenterDaggerTest {
     }
 
     @Test
-    public void testObservable() {
+    public void shouldReceiveObservable() {
         Observable<CityListResponse> observable = Observable.just(mockResponse);
         TestSubscriber<CityListResponse> testSubscriber = new TestSubscriber<>();
         observable.subscribe(testSubscriber);
@@ -61,10 +62,16 @@ public class HomePresenterDaggerTest {
     }
 
     @Test
-    public void testHomePresenter() {
+    public void shouldHaveCorrectDataWhenApiSucceed() {
         homePresenter.getCityList();
         verify(homeView).showProgressBar();
         verify(homeView).hideProgressBar();
-        verify(homeView).getCityListSuccess(mockResponse);
+        verify(homeView).showCityList(mockResponse);
+    }
+
+    @Test
+    public void checkIfViewIsDetachedOnDestroyView() {
+        homePresenter.detachView();
+        assertFalse(homePresenter.isViewAttached());
     }
 }
