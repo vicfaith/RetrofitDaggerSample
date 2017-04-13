@@ -15,6 +15,11 @@ android:
     - addon-google_apis-google-19
     - sys-img-armeabi-v7a-android-25
 
+branches:
+  only:
+  - master
+  - develop
+
 before_install:
     - mkdir "$ANDROID_HOME/licenses" || true
     - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
