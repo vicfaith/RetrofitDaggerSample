@@ -12,8 +12,6 @@ public class MainActivity extends BaseActivity {
 
         setContentView(R.layout.activity_main);
 
-//        ((MyApplication) getApplication()).getComponent().inject(this);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new MainFragment()).commit();
     }
 }

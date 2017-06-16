@@ -1,6 +1,7 @@
 package au.com.vicfaith.android.retrofitdaggersample;
 
 import android.app.Application;
+import android.support.annotation.VisibleForTesting;
 
 import java.io.File;
 
@@ -24,19 +25,22 @@ public class MyApplication extends Application {
         super.onCreate();
 
         application = this;
-
-        injectDependencies();
-    }
-
-    protected void injectDependencies() {
-        myAppComponent = DaggerMyAppComponent.builder()
-                .myAppModule(new MyAppModule(this))
-                .dataModule(new DataModule(this))
-                .networkModule(new NetworkModule(new File(getCacheDir(), "responses")))
-                .build();
     }
 
     public MyAppComponent getComponent() {
+        if (myAppComponent == null) {
+            myAppComponent = DaggerMyAppComponent.builder()
+                    .myAppModule(new MyAppModule(this))
+                    .dataModule(new DataModule(this))
+                    .networkModule(new NetworkModule(new File(getCacheDir(), "responses")))
+                    .build();
+        }
+
         return myAppComponent;
+    }
+
+    @VisibleForTesting
+    public void setAppComponent(MyAppComponent appComponent) {
+        this.myAppComponent = appComponent;
     }
 }

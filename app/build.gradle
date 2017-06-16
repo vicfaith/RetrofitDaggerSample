@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.fernandocejas.frodo'
 
 android {
     compileSdkVersion 24
@@ -23,6 +24,12 @@ android {
     }
 }
 
+//By default frodo is ON on debug build variants, although
+//we can enable-disable it with this configuration.
+frodo {
+    enabled = true
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -35,7 +42,7 @@ dependencies {
 
     //Dagger
     compile 'com.google.dagger:dagger:2.7'
-    apt "com.google.dagger:dagger-compiler:2.7"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.7"
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'javax.inject:javax.inject:1'
 
@@ -55,8 +62,10 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
     testCompile 'junit:junit:4.12'
-    testApt "com.google.dagger:dagger-compiler:2.7"
-    testCompile "org.mockito:mockito-core:2.3.0"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:2.7"
+    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:2.7"
+
+    testCompile "org.mockito:mockito-core:1.10.19"
     testCompile('org.robolectric:robolectric:3.1.4') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
@@ -65,4 +74,8 @@ dependencies {
     testCompile "org.robolectric:shadows-play-services:3.1.4"
     testCompile "org.robolectric:shadows-support-v4:3.1.4"
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+
+    androidTestCompile "org.mockito:mockito-core:1.10.19"
+    androidTestCompile "com.google.dexmaker:dexmaker:1.2"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
 }
