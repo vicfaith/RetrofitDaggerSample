@@ -52,7 +52,7 @@ before_script:
 
 script:
     - if [ "$TRAVIS_BRANCH" = "develop" ]; then echo "./gradlew test"; else ./gradlew assembleRelease; fi
-    - ./gradlew jacocoTestReport connectedDebugAndroidTest  --continue --stacktrace
+    - ./gradlew jacocoTestDebugUnitTestReport connectedDebugAndroidTest  --continue --stacktrace
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
