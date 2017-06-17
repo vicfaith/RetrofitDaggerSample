@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.fernandocejas.frodo'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 24
@@ -20,6 +21,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            testCoverageEnabled true
         }
     }
 }
