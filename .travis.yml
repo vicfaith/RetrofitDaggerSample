@@ -9,8 +9,6 @@ env:
    - ANDROID_BUILD_TOOLS_VERSION=25.0.3
    - EMULATOR_TAG=google_apis
    - EMULATOR_ABI=armeabi-v7a
-   - TOOLS=${ANDROID_HOME}/tools
-   - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
    - ADB_INSTALL_TIMEOUT=20
 
 android:
