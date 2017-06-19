@@ -4,11 +4,11 @@ jdk:
 
 env:
   global:
-   - ANDROID_API_LEVEL=25
-   - EMULATOR_API_LEVEL=21
+   - ANDROID_API=25
+   - EMULATOR_API=23
    - ANDROID_BUILD_TOOLS_VERSION=25.0.3
-   - EMULATOR_TAG=google_apis
    - EMULATOR_ABI=armeabi-v7a
+   - ANDROID_TAG=google_apis
    - ADB_INSTALL_TIMEOUT=20
    - CODECOV_TOKEN=:c012abc8-6ae6-478a-b6ac-af03f5d80f55
 
@@ -16,14 +16,20 @@ android:
   components:
     - tools
     - platform-tools
-    - android-25
+    - android-$ANDROID_API
+    - android-$EMULATOR_API
     - extra
     - build-tools-25.0.1
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-19
-    - sys-img-armeabi-v7a-android-25
+    - extra-android-support
+    - addon-google_apis-google-$ANDROID_API
+    - addon-google_apis-google-$EMULATOR_API
+    - sys-img-armeabi-v7a-google_apis-$ANDROID_API
+    - sys-img-armeabi-v7a-google_apis-$EMULATOR_API
+    #- sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API
+    #- sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -45,14 +51,18 @@ before_install:
     - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 before_script:
-    - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a 
-    - emulator -avd test -no-audio -no-window &
-    - android-wait-for-emulator
-    - adb shell input keyevent 82 &
+    - echo no | android create avd --force -n test -t android-$EMULATOR_API --abi $EMULATOR_ABI --tag $ANDROID_TAG
+    - emulator -avd test -no-skin -no-audio -no-window &
 
 script:
-    - if [ "$TRAVIS_BRANCH" = "develop" ]; then echo "./gradlew test"; else ./gradlew assembleRelease; fi
-    - ./gradlew jacocoTestDebugUnitTestReport connectedDebugAndroidTest  --continue --stacktrace
+  - ./gradlew build jacocoTestReport assembleAndroidTest
+  - android-wait-for-emulator
+  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+  - adb shell input keyevent 82 &
+  - ./gradlew connectedCheck --info
+
+  #- if [ "$TRAVIS_BRANCH" = "develop" ]; then echo "./gradlew test"; else ./gradlew assembleRelease; fi
+  #- ./gradlew jacocoTestDebugUnitTestReport connectedDebugAndroidTest  --continue --stacktrace --info
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
