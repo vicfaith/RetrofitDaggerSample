@@ -10,7 +10,6 @@ env:
    - EMULATOR_ABI=armeabi-v7a
    - ANDROID_TAG=google_apis
    - ADB_INSTALL_TIMEOUT=20
-   - CODECOV_TOKEN=:c012abc8-6ae6-478a-b6ac-af03f5d80f55
 
 android:
   components:
