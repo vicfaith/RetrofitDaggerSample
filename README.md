@@ -8,3 +8,5 @@ https://github.com/Quoders/treepolis-android
 https://github.com/antoniolg/androidmvp
 http://www.vogella.com/tutorials/Dagger/article.html
 
+[![Code Coverage](https://img.shields.io/codecov/c/github/pvorb/property-providers/develop.svg)](https://codecov.io/github/pvorb/property-providers?branch=develop)
+
