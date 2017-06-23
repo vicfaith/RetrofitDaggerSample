@@ -28,8 +28,8 @@ android:
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API
     - sys-img-armeabi-v7a-google_apis-$EMULATOR_API
     - sys-img-armeabi-v7a-$EMULATOR_API
-    #- sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API
-    #- sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API
+    - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API
+    - sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
