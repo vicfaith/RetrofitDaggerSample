@@ -72,7 +72,6 @@ public class HomePresenterTest {
         testSubscriber.assertReceivedOnNext(Collections.singletonList(expectedResult));
     }
 
-    @Test
     public void shouldHaveCorrectDataWhenApiSucceed() {
         ApiService apiService = new ApiService(apiInterface);
         when(apiInterface.getCityList()).thenReturn(Observable.just(expectedResult));
@@ -86,7 +85,6 @@ public class HomePresenterTest {
         verify(homeView, never()).showError(null);
     }
 
-    @Test
     public void shouldNotShowProgressWheRuntimeError() {
         ApiService apiService = new ApiService(apiInterface);
         when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new RuntimeException("error")));
