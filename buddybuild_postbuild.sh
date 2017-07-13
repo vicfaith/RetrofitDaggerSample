@@ -4,4 +4,4 @@
 ./gradlew clean jacocoTestReport
 
 # upload jacoco report to codecov
-bash <(curl -s https://codecov.io/bash)
+bash <(curl -s https://codecov.io/bash) -t "$CODECOV_TOKEN"
