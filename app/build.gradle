@@ -17,6 +17,14 @@ android {
         buildConfigField "int", "CACHETIME", "43200"
     }
 
+    productFlavors {
+        dev {
+        }
+
+        prod {
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
