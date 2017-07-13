@@ -98,7 +98,6 @@ public class HomePresenterTest {
         verify(homeView, never()).showCityList(expectedResult);
     }
 
-    @Test
     public void shouldNotShowProgressWhenApiFails() {
         ApiService apiService = new ApiService(apiInterface);
         when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new IOException("network unavailable")));
