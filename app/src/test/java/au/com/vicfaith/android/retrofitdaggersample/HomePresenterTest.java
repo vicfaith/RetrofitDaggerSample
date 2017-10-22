@@ -3,10 +3,8 @@ package au.com.vicfaith.android.retrofitdaggersample;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -34,8 +32,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-
-@RunWith(RobolectricTestRunner.class)
 public class HomePresenterTest {
     @Mock
     HomeView homeView;
@@ -72,6 +68,7 @@ public class HomePresenterTest {
         testSubscriber.assertReceivedOnNext(Collections.singletonList(expectedResult));
     }
 
+    @Test
     public void shouldHaveCorrectDataWhenApiSucceed() {
         ApiService apiService = new ApiService(apiInterface);
         when(apiInterface.getCityList()).thenReturn(Observable.just(expectedResult));
@@ -85,9 +82,10 @@ public class HomePresenterTest {
         verify(homeView, never()).showError(null);
     }
 
+    @Test
     public void shouldNotShowProgressWheRuntimeError() {
         ApiService apiService = new ApiService(apiInterface);
-        when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new RuntimeException("error")));
+        when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new Exception("error")));
         HomePresenter homePresenter = new HomePresenter(apiService, null);
         homePresenter.attachView(homeView);
         homePresenter.getCityList();
@@ -98,6 +96,7 @@ public class HomePresenterTest {
         verify(homeView, never()).showCityList(expectedResult);
     }
 
+    @Test
     public void shouldNotShowProgressWhenApiFails() {
         ApiService apiService = new ApiService(apiInterface);
         when(apiInterface.getCityList()).thenReturn(Observable.<CityListResponse>error(new IOException("network unavailable")));
