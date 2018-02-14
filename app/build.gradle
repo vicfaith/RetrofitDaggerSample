@@ -5,7 +5,7 @@ apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "au.com.vicfaith.android.retrofitdaggersample"
         minSdkVersion 17
@@ -15,14 +15,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://private-b8cf44-androidcleancode.apiary-mock.com/\""
         buildConfigField "int", "CACHETIME", "43200"
-    }
-
-    productFlavors {
-        dev {
-        }
-
-        prod {
-        }
     }
 
     buildTypes {

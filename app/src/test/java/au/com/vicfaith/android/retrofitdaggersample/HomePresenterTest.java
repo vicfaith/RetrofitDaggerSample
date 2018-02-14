@@ -1,5 +1,7 @@
 package au.com.vicfaith.android.retrofitdaggersample;
 
+import android.database.Observable;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,22 +17,7 @@ import au.com.vicfaith.android.retrofitdaggersample.network.ApiService;
 import au.com.vicfaith.android.retrofitdaggersample.ui.HomePresenter;
 import au.com.vicfaith.android.retrofitdaggersample.ui.HomeView;
 import au.com.vicfaith.android.retrofitdaggersample.util.TestDataFactory;
-import rx.Observable;
-import rx.Scheduler;
-import rx.android.plugins.RxAndroidPlugins;
-import rx.android.plugins.RxAndroidSchedulersHook;
-import rx.observers.TestSubscriber;
-import rx.schedulers.Schedulers;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class HomePresenterTest {
     @Mock
